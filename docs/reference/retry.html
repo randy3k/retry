@@ -125,7 +125,7 @@
   <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>max_tries</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>later_run_now</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -166,8 +166,8 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
       <td><p>delay between retries.</p></td>
     </tr>
     <tr>
-      <th>later_run_now</th>
-      <td><p>execute <code><a href='https://rdrr.io/pkg/later/man/run_now.html'>later::run_now()</a></code> before checking <code>until</code>?</p></td>
+      <th>...</th>
+      <td><p>internal use only</p></td>
     </tr>
     </table>
 
@@ -182,14 +182,14 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
   <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>t</span> - <span class='no'>s</span>)
 }
 <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.031722 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.014104 secs</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='co'># this won't work because each retry reruns Sys.time()</span>
   <span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='fl'>1</span>), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 }
 
 <span class='co'># instead, we could use quasiquotation</span>
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.025625 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.032328 secs</div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>
 <span class='no'>counter</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='no'>x</span> + <span class='fl'>1</span>

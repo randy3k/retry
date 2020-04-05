@@ -18,7 +18,7 @@
 #' @param timeout raise an error if this amount of time in second has passed.
 #' @param max_tries maximum number of attempts
 #' @param interval delay between retries.
-#' @param later_run_now execute \code{later::run_now()} before checking \code{until}?
+#' @param ... internal use only
 #' @examples
 #' retry(10)  # returns 10 imediately
 #'
@@ -65,10 +65,12 @@ retry <- function(expr,
                   timeout = Inf,
                   max_tries = Inf,
                   interval = 0.1,
-                  later_run_now = FALSE) {
+                  ...) {
     expr <- rlang::enexpr(expr)
     until <- rlang::as_function(until)
-    use_later <- later_run_now && requireNamespace("later", quietly = TRUE)
+    ellipsis <- list(...)
+    use_later <- isTRUE(ellipsis$later_run_now) && requireNamespace("later", quietly = TRUE)
+
     t1 <- Sys.time()
     trial <- 0
     res <- NULL

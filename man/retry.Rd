@@ -12,7 +12,7 @@ retry(
   timeout = Inf,
   max_tries = Inf,
   interval = 0.1,
-  later_run_now = FALSE
+  ...
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ using \code{rlang::as_function}.}
 
 \item{interval}{delay between retries.}
 
-\item{later_run_now}{execute \code{later::run_now()} before checking \code{until}?}
+\item{...}{internal use only}
 }
 \description{
 Retry an expression until either timeout is exceeded or a condition is fullfilled.
