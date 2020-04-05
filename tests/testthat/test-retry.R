@@ -1,8 +1,19 @@
 test_that("retry works", {
   expect_equal(retry(10), 10)
+  expect_equal(retry(10, until = ~TRUE), 10)
+  s <- Sys.time()
+  x <- 0
+  expect_message(
+    retry({
+        message("hello")
+        x <<- 1
+      },
+      upon = "message", until = ~ Sys.time() - s > 1),
+    "hello")
+  expect_equal(x, 0)
+
   expect_silent(retry(message("hello")))
   expect_message(retry(message("hello"), silent = FALSE), "hello")
-  expect_equal(retry(10, until = ~TRUE), 10)
 })
 
 test_that("timeout works", {

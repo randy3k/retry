@@ -1,4 +1,5 @@
 #' @docType package
+#' @import rlang
 #' @aliases NULL
 "_PACKAGE"
 
@@ -7,11 +8,13 @@
 #' Retry an expression until either timeout is exceeded or a condition is fullfilled.
 #' @param expr an expression to be evaluated, quasiquotation is supported.
 #' @param envir the environment in which the expression is to be evaluated.
+#' @param upon a vector of condition classes. The expression will be retried if the
+#' condition thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.
 #' @param until a function of two aruments. This function is used to check if we need to
-#' re-evaluate \code{expr}. The first argument is the result of \code{expr} and the second argument
-#' is the potential error condition when \code{expr} is evaluated. \code{retry} returns the
+#' retry \code{expr}. The first argument is the result of \code{expr} and the second argument
+#' is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
 #' result of \code{expr} if \code{until} returns \code{TRUE}.
-#' Default value is \code{function(res, cnd) \{is.null(cnd)\}}.
+#' The default behavior is to retry unless no condition is thrown.
 #' It could be also a one sided formula that is later converted to a function
 #' using \code{rlang::as_function}.
 #' @param silent suppress messages and warnings
@@ -60,14 +63,15 @@
 #' @export
 retry <- function(expr,
                   envir = parent.frame(),
-                  until = .default_until,
+                  upon = "error",
+                  until = no_conditions_thrown,
                   silent = TRUE,
                   timeout = Inf,
                   max_tries = Inf,
                   interval = 0.1,
                   ...) {
-    expr <- rlang::enexpr(expr)
-    until <- rlang::as_function(until)
+    expr <- enexpr(expr)
+    until <- as_function(until)
     ellipsis <- list(...)
     use_later <- isTRUE(ellipsis$later_run_now) && requireNamespace("later", quietly = TRUE)
 
@@ -79,7 +83,7 @@ retry <- function(expr,
         if (remaining <= 0) {
             stop("timeout exceeded.")
         }
-        once <- run_once(expr, envir, remaining, silent)
+        once <- run_once(expr, envir, upon = upon, timeout = remaining, silent = silent)
         trial <- trial + 1
         res <- once$result
         cnd <- once$error
@@ -88,7 +92,7 @@ retry <- function(expr,
         }
         if (isTRUE(until(res, cnd))) {
             if (!is.null(cnd)) {
-                rlang::cnd_signal(cnd)
+                cnd_signal(cnd)
             }
             if (once$visible) {
                 return(res)
@@ -104,66 +108,37 @@ retry <- function(expr,
 }
 
 
-#' Block the current runtime until the expression returns \code{TRUE}.
-#' @param expr the expression to check
-#' @param envir the environment in which the expression is to be evaluated.
-#' @param timeout raise an error if this amount of time in second has passed.
-#' @param interval delay between retries.
-#' @param later_run_now execute \code{later::run_now()} periodically?
-#' @examples
-#'
-#' s <- Sys.time()
-#' system.time(wait_until(Sys.time() - s > 1))
-#'
-#' @export
-wait_until <- function(expr,
-                       envir = parent.frame(),
-                       timeout = Inf,
-                       interval = 0.1,
-                       later_run_now = TRUE) {
-    expr <- rlang::enexpr(expr)
-    retry(
-        invisible(NULL),
-        until = function(res, cnd) eval(expr, envir),
-        timeout = timeout,
-        interval = interval,
-        later_run_now = later_run_now
-    )
-}
-
-
-.default_until <- function(res, cnd) {
+no_conditions_thrown <- function(res, cnd) {
     is.null(cnd)
 }
 
 
-run_once <- function(expr, envir, timeout, silent) {
-    is_error <- FALSE
-    err_handler <- function(e) {
-        is_error <<- TRUE
-        e
-    }
+suppress <- function(expr, envir = parent.frame()) {
+    expr <- enexpr(expr)
+    suppressMessages(suppressWarnings(eval_bare(expr, envir)))
+}
+
+
+run_once <- function(expr, envir, upon, timeout, silent) {
     setTimeLimit(timeout, timeout)
     on.exit({
         setTimeLimit()
     })
-    expr <- rlang::call2("withVisible", expr)
+    expr <- call2("withVisible", expr)
+
     if (silent) {
-        res <- suppressMessages(
-            suppressWarnings(
-                tryCatch(eval(expr, envir), error = err_handler)
-            )
-        )
+        cnd <- suppress(catch_cnd(res <- eval_bare(expr, envir), classes = upon))
     } else {
-        res <- tryCatch(eval(expr, envir), error = err_handler)
+        cnd <- catch_cnd(res <- eval_bare(expr, envir), classes = upon)
     }
-    if (is_error) {
-        return(
-            list(result = NULL, visible = FALSE, error = res)
-        )
-    } else {
+
+    if (is.null(cnd)) {
         return(
             list(result = res$value, visible = res$visible, error = NULL)
+        )
+    } else {
+        return(
+            list(result = NULL, visible = FALSE, error = cnd)
         )
     }
 }

@@ -7,7 +7,8 @@
 retry(
   expr,
   envir = parent.frame(),
-  until = .default_until,
+  upon = "error",
+  until = no_conditions_thrown,
   silent = TRUE,
   timeout = Inf,
   max_tries = Inf,
@@ -20,11 +21,14 @@ retry(
 
 \item{envir}{the environment in which the expression is to be evaluated.}
 
+\item{upon}{a vector of condition classes. The expression will be retried if the
+condition thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
+
 \item{until}{a function of two aruments. This function is used to check if we need to
-re-evaluate \code{expr}. The first argument is the result of \code{expr} and the second argument
-is the potential error condition when \code{expr} is evaluated. \code{retry} returns the
+retry \code{expr}. The first argument is the result of \code{expr} and the second argument
+is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
 result of \code{expr} if \code{until} returns \code{TRUE}.
-Default value is \code{function(res, cnd) \{is.null(cnd)\}}.
+The default behavior is to retry unless no condition is thrown.
 It could be also a one sided formula that is later converted to a function
 using \code{rlang::as_function}.}
 
