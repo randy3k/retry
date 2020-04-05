@@ -8,13 +8,13 @@
 #' Retry an expression until either timeout is exceeded or a condition is fullfilled.
 #' @param expr an expression to be evaluated, quasiquotation is supported.
 #' @param envir the environment in which the expression is to be evaluated.
-#' @param upon a vector of condition classes. The expression will be retried if the
-#' condition thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.
+#' @param upon a vector of condition classes. The expression will be retried if a
+#' condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.
 #' @param until a function of two aruments. This function is used to check if we need to
 #' retry \code{expr}. The first argument is the result of \code{expr} and the second argument
 #' is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
 #' result of \code{expr} if \code{until} returns \code{TRUE}.
-#' The default behavior is to retry unless no condition is thrown.
+#' The default behavior is to retry unless no conditions are thrown.
 #' It could be also a one sided formula that is later converted to a function
 #' using \code{rlang::as_function}.
 #' @param silent suppress messages and warnings
@@ -23,7 +23,7 @@
 #' @param interval delay between retries.
 #' @param ... internal use only
 #' @examples
-#' retry(10)  # returns 10 imediately
+#' retry(10)  # returns 10 immediately
 #'
 #' elapse <- function(s, by) {
 #'   t <- Sys.time()

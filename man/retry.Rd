@@ -21,14 +21,14 @@ retry(
 
 \item{envir}{the environment in which the expression is to be evaluated.}
 
-\item{upon}{a vector of condition classes. The expression will be retried if the
-condition thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
+\item{upon}{a vector of condition classes. The expression will be retried if a
+condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
 
 \item{until}{a function of two aruments. This function is used to check if we need to
 retry \code{expr}. The first argument is the result of \code{expr} and the second argument
 is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
 result of \code{expr} if \code{until} returns \code{TRUE}.
-The default behavior is to retry unless no condition is thrown.
+The default behavior is to retry unless no conditions are thrown.
 It could be also a one sided formula that is later converted to a function
 using \code{rlang::as_function}.}
 
@@ -46,7 +46,7 @@ using \code{rlang::as_function}.}
 Retry an expression until either timeout is exceeded or a condition is fullfilled.
 }
 \examples{
-retry(10)  # returns 10 imediately
+retry(10)  # returns 10 immediately
 
 elapse <- function(s, by) {
   t <- Sys.time()

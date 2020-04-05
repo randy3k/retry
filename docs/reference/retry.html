@@ -142,8 +142,8 @@
     </tr>
     <tr>
       <th>upon</th>
-      <td><p>a vector of condition classes. The expression will be retried if the
-condition thrown. See the <code>classes</code> parameter of <code><a href='https://rlang.r-lib.org/reference/catch_cnd.html'>rlang::catch_cnd</a></code>.</p></td>
+      <td><p>a vector of condition classes. The expression will be retried if a
+condition is thrown. See the <code>classes</code> parameter of <code><a href='https://rlang.r-lib.org/reference/catch_cnd.html'>rlang::catch_cnd</a></code>.</p></td>
     </tr>
     <tr>
       <th>until</th>
@@ -151,7 +151,7 @@ condition thrown. See the <code>classes</code> parameter of <code><a href='https
 retry <code>expr</code>. The first argument is the result of <code>expr</code> and the second argument
 is the condition thrown when <code>expr</code> was evaluated. <code>retry</code> would return the
 result of <code>expr</code> if <code>until</code> returns <code>TRUE</code>.
-The default behavior is to retry unless no condition is thrown.
+The default behavior is to retry unless no conditions are thrown.
 It could be also a one sided formula that is later converted to a function
 using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function</a></code>.</p></td>
     </tr>
@@ -179,7 +179,7 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>retry</span>(<span class='fl'>10</span>)  <span class='co'># returns 10 imediately</span></div><div class='output co'>#&gt; [1] 10</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>retry</span>(<span class='fl'>10</span>)  <span class='co'># returns 10 immediately</span></div><div class='output co'>#&gt; [1] 10</div><div class='input'>
 <span class='no'>elapse</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>s</span>, <span class='no'>by</span>) {
   <span class='no'>t</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()
   <span class='kw'>if</span> (<span class='no'>t</span> - <span class='no'>s</span> <span class='kw'>&lt;</span> <span class='no'>by</span>) {
@@ -188,14 +188,14 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
   <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>t</span> - <span class='no'>s</span>)
 }
 <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.030594 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.022536 secs</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='co'># this won't work because each retry reruns Sys.time()</span>
   <span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='fl'>1</span>), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 }
 
 <span class='co'># instead, we could use quasiquotation</span>
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.033512 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.03128 secs</div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>
 <span class='no'>counter</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='no'>x</span> + <span class='fl'>1</span>
