@@ -1,0 +1,19 @@
+Package: retry
+Type: Package
+Title: Retry an Expression Until Timeout
+Version: 0.1.0
+Authors@R: 
+    c(person(given = "Randy",
+             family = "Lai",
+             role = c("aut", "cre"),
+             email = "randy.cs.lai@gmail.com"))
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Suggests: 
+    testthat (>= 2.1.0)
+Imports: 
+    rlang
