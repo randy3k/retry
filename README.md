@@ -7,7 +7,7 @@ Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/retry)](https://cran.r-project.org/package=retry)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/retry)](https://cran.r-project.org/package=retry)
 
-The retry package provide a simple mechanism to keep evaluating an expression until either it succeeds or timeout. It is useful in situations that random failures could happen.
+The retry package provides a simple mechanism to repeatedly evaluate an expression until either it succeeds or timeout exceeded. It is useful in situations that random failures could happen.
 
 ## Installation
 

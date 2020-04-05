@@ -7,7 +7,7 @@ Authors@R:
              family = "Lai",
              role = c("aut", "cre"),
              email = "randy.cs.lai@gmail.com"))
-Description: The retry package provide a simple mechanism to keep evaluating an expression until either it succeeds or timeout. It is useful in situations that random failures could happen.
+Description: The retry package provides a simple mechanism to repeatedly evaluate an expression until either it succeeds or timeout exceeded. It is useful in situations that random failures could happen.
 License: MIT + file LICENSE
 URL: https://github.com/randy3k/retry
 Encoding: UTF-8
