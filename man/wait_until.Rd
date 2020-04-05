@@ -4,7 +4,13 @@
 \alias{wait_until}
 \title{Block the current runtime until the expression returns \code{TRUE}.}
 \usage{
-wait_until(expr, envir = parent.frame(), timeout = Inf, interval = 0.1)
+wait_until(
+  expr,
+  envir = parent.frame(),
+  timeout = Inf,
+  interval = 0.1,
+  later_run_now = TRUE
+)
 }
 \arguments{
 \item{expr}{the expression to check}
@@ -14,6 +20,8 @@ wait_until(expr, envir = parent.frame(), timeout = Inf, interval = 0.1)
 \item{timeout}{raise an error if this amount of time in second has passed.}
 
 \item{interval}{delay between retries.}
+
+\item{later_run_now}{execute \code{later::run_now()} periodically?}
 }
 \description{
 Block the current runtime until the expression returns \code{TRUE}.
