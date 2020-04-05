@@ -18,6 +18,7 @@
 #' @param timeout raise an error if this amount of time in second has passed.
 #' @param max_tries maximum number of attempts
 #' @param interval delay between retries.
+#' @param later_run_now execute \code{later::run_now()} before checking \code{until}?
 #' @examples
 #' retry(10)  # returns 10 imediately
 #'
@@ -63,9 +64,11 @@ retry <- function(expr,
                   silent = TRUE,
                   timeout = Inf,
                   max_tries = Inf,
-                  interval = 0.1) {
+                  interval = 0.1,
+                  later_run_now = FALSE) {
     expr <- rlang::enexpr(expr)
     until <- rlang::as_function(until)
+    use_later <- later_run_now && requireNamespace("later", quietly = TRUE)
     t1 <- Sys.time()
     trial <- 0
     res <- NULL
@@ -80,6 +83,9 @@ retry <- function(expr,
         trial <- trial + 1
         res <- once$result
         cnd <- once$error
+        if (use_later) {
+            later::run_now()
+        }
         if (isTRUE(until(res, cnd))) {
             if (!is.null(cnd)) {
                 rlang::cnd_signal(cnd)
@@ -100,19 +106,26 @@ retry <- function(expr,
 #' @param envir the environment in which the expression is to be evaluated.
 #' @param timeout raise an error if this amount of time in second has passed.
 #' @param interval delay between retries.
+#' @param later_run_now execute \code{later::run_now()} periodically?
 #' @examples
 #'
 #' s <- Sys.time()
 #' system.time(wait_until(Sys.time() - s > 1))
 #'
 #' @export
-wait_until <- function(expr, envir = parent.frame(), timeout = Inf, interval = 0.1) {
+wait_until <- function(expr,
+                       envir = parent.frame(),
+                       timeout = Inf,
+                       interval = 0.1,
+                       later_run_now = TRUE) {
     expr <- rlang::enexpr(expr)
     retry(
         invisible(NULL),
         until = function(res, cnd) eval(expr, envir),
         timeout = timeout,
-        interval = interval)
+        interval = interval,
+        later_run_now = later_run_now
+    )
 }
 
 
