@@ -30,13 +30,11 @@ devtools::install_github("randy3k/retry")
 library(retry)
 
 path <- tempfile()
-callr::r_bg(function(path) cat("hello\n", file = path), list(path = path))
-#> PROCESS 'R', running, pid 86861.
-retry(readLines(path), timeout = 5, silent = FALSE)
+later::later(function() cat("hello\n", file = path), 1)
+retry(readLines(path), timeout = 5)
 #> [1] "hello"
 
-callr::r_bg(function(path) cat("world\n", file = path, append = TRUE), list(path = path))
-#> PROCESS 'R', running, pid 87127.
-retry(readLines(path), until = ~ "world" %in% ., timeout = 5)    
+later::later(function() cat("world\n", file = path, append = TRUE), 1)
+retry(readLines(path), until = ~ "world" %in% ., timeout = 5)
 #> [1] "hello" "world"
 ```
