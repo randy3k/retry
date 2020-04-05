@@ -1,10 +1,9 @@
 
 # retry
 
-<!-- [![Github
-Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master)](https://github.com/randy3k/retry) -->
-<!-- [![codecov](https://codecov.io/gh/randy3k/retry/branch/master/graph/badge.svg)](https://codecov.io/gh/randy3k/retry) -->
-
+[![Github
+Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master)](https://github.com/randy3k/retry)
+[![codecov](https://codecov.io/gh/randy3k/retry/branch/master/graph/badge.svg)](https://codecov.io/gh/randy3k/retry)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/retry)](https://cran.r-project.org/package=retry)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/retry)](https://cran.r-project.org/package=retry)
 
