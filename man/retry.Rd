@@ -26,7 +26,7 @@ Default value is \code{function(res, cnd) \{is.null(cnd)\}}.
 It could be also a one sided formula that is later converted to a function
 using \code{rlang::as_function}.}
 
-\item{silent}{currently ignored.}
+\item{silent}{suppress messages and warnings}
 
 \item{timeout}{raise an error if this amount of time in second has passed.}
 

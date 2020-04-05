@@ -1,14 +1,13 @@
 Package: retry
 Type: Package
-Title: Retry an Expression Until Timeout
+Title: Retry an Expression
 Version: 0.1.0
 Authors@R: 
     c(person(given = "Randy",
              family = "Lai",
              role = c("aut", "cre"),
              email = "randy.cs.lai@gmail.com"))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: The retry package provide an easy mechanism to keep evaluating an expression until either it successes or timeout. It is useful in situations that random failures could happen, examples would be network or file IO.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

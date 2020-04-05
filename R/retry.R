@@ -1,3 +1,7 @@
+#' @docType package
+#' @aliases NULL
+"_PACKAGE"
+
 #' Retry an expression
 #'
 #' Retry an expression until either timeout is exceeded or a condition is fullfilled.
