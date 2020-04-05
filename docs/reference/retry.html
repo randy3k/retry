@@ -120,7 +120,8 @@
     <pre class="usage"><span class='fu'>retry</span>(
   <span class='no'>expr</span>,
   <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(),
-  <span class='kw'>until</span> <span class='kw'>=</span> <span class='no'>.default_until</span>,
+  <span class='kw'>upon</span> <span class='kw'>=</span> <span class='st'>"error"</span>,
+  <span class='kw'>until</span> <span class='kw'>=</span> <span class='no'>no_conditions_thrown</span>,
   <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>max_tries</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
@@ -140,12 +141,17 @@
       <td><p>the environment in which the expression is to be evaluated.</p></td>
     </tr>
     <tr>
+      <th>upon</th>
+      <td><p>a vector of condition classes. The expression will be retried if the
+condition thrown. See the <code>classes</code> parameter of <code><a href='https://rlang.r-lib.org/reference/catch_cnd.html'>rlang::catch_cnd</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>until</th>
       <td><p>a function of two aruments. This function is used to check if we need to
-re-evaluate <code>expr</code>. The first argument is the result of <code>expr</code> and the second argument
-is the potential error condition when <code>expr</code> is evaluated. <code>retry</code> returns the
+retry <code>expr</code>. The first argument is the result of <code>expr</code> and the second argument
+is the condition thrown when <code>expr</code> was evaluated. <code>retry</code> would return the
 result of <code>expr</code> if <code>until</code> returns <code>TRUE</code>.
-Default value is <code>function(res, cnd) {is.null(cnd)}</code>.
+The default behavior is to retry unless no condition is thrown.
 It could be also a one sided formula that is later converted to a function
 using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function</a></code>.</p></td>
     </tr>
@@ -182,14 +188,14 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
   <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>t</span> - <span class='no'>s</span>)
 }
 <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.014104 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.028007 secs</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='co'># this won't work because each retry reruns Sys.time()</span>
   <span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='fl'>1</span>), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 }
 
 <span class='co'># instead, we could use quasiquotation</span>
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.032328 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.032948 secs</div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>
 <span class='no'>counter</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='no'>x</span> + <span class='fl'>1</span>

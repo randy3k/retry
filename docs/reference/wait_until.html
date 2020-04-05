@@ -109,7 +109,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Block the current runtime until the expression returns <code>TRUE</code>.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/randy3k/retry/blob/master/R/retry.R'><code>R/retry.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/randy3k/retry/blob/master/R/wait.R'><code>R/wait.R</code></a></small>
     <div class="hidden name"><code>wait_until.Rd</code></div>
     </div>
 
@@ -155,7 +155,7 @@
     <pre class="examples"><div class='input'>
 <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()
 <span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span>(<span class='fu'>wait_until</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>() - <span class='no'>s</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt;    user  system elapsed 
-#&gt;   0.011   0.001   0.930 </div><div class='input'>
+#&gt;   0.011   0.001   1.033 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
