@@ -4,7 +4,7 @@
 \name{retry-package}
 \title{retry: Retry an Expression}
 \description{
-The retry package provide an easy mechanism to keep evaluating an expression until either it succeeds or timeout. It is useful in situations that random failures could happen, examples would be network or file IO.
+The retry package provide a simple mechanism to keep evaluating an expression until either it succeeds or timeout. It is useful in situations that random failures could happen.
 }
 \seealso{
 Useful links:
