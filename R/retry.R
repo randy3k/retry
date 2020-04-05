@@ -76,8 +76,6 @@ retry <- function(expr,
         remaining <- t1 + timeout - Sys.time()
         if (remaining <= 0) {
             stop("timeout exceeded.")
-        } else if (trial > max_tries) {
-            stop("maximum number of tries exceeded.")
         }
         once <- run_once(expr, envir, remaining, silent)
         trial <- trial + 1
@@ -95,6 +93,9 @@ retry <- function(expr,
             } else {
                 return(invisible(res))
             }
+        }
+        if (trial >= max_tries) {
+            stop("maximum number of tries exceeded.")
         }
         Sys.sleep(interval)
     }
