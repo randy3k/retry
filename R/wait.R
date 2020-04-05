@@ -18,7 +18,7 @@ wait_until <- function(expr,
     expr <- rlang::enexpr(expr)
     retry(
         invisible(NULL),
-        until = function(res, cnd) eval(expr, envir),
+        until = function(res, cnd) eval_bare(expr, envir),
         timeout = timeout,
         interval = interval,
         later_run_now = later_run_now
