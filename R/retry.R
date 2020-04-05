@@ -9,13 +9,14 @@
 #' @param envir the environment in which the expression is to be evaluated.
 #' @param until a function of two aruments. This function is used to check if we need to
 #' re-evaluate \code{expr}. The first argument is the result of \code{expr} and the second argument
-#' is the potential error condition when \code{expr} is evaluated. The `retry` function returns the
+#' is the potential error condition when \code{expr} is evaluated. \code{retry} returns the
 #' result of \code{expr} if \code{until} returns \code{TRUE}.
 #' Default value is \code{function(res, cnd) \{is.null(cnd)\}}.
 #' It could be also a one sided formula that is later converted to a function
 #' using \code{rlang::as_function}.
 #' @param silent suppress messages and warnings
 #' @param timeout raise an error if this amount of time in second has passed.
+#' @param max_tries maximum number of attempts
 #' @param interval delay between retries.
 #' @examples
 #' retry(10)  # returns 10 imediately
@@ -61,18 +62,23 @@ retry <- function(expr,
                   until = .default_until,
                   silent = TRUE,
                   timeout = Inf,
+                  max_tries = Inf,
                   interval = 0.1) {
     expr <- rlang::enexpr(expr)
     until <- rlang::as_function(until)
 
     t1 <- Sys.time()
+    trial <- 0
     res <- NULL
     while (TRUE) {
         remaining <- t1 + timeout - Sys.time()
         if (remaining <= 0) {
             stop("timeout exceeded.")
+        } else if (trial > max_tries) {
+            stop("maximum number of tries exceeded.")
         }
         once <- run_once(expr, envir, remaining, silent)
+        trial <- trial + 1
         res <- once$result
         cnd <- once$error
         if (isTRUE(until(res, cnd))) {
@@ -118,8 +124,6 @@ wait_until <- function(expr, envir = parent.frame(), timeout = Inf, interval = 0
 
 run_once <- function(expr, envir, timeout, silent) {
     is_error <- FALSE
-    warn_cnd <- NULL
-    msg_cnd <- NULL
     err_handler <- function(e) {
         is_error <<- TRUE
         e

@@ -6,6 +6,13 @@
 \description{
 The retry package provide an easy mechanism to keep evaluating an expression until either it succeeds or timeout. It is useful in situations that random failures could happen, examples would be network or file IO.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/randy3k/retry}
+}
+
+}
 \author{
 \strong{Maintainer}: Randy Lai \email{randy.cs.lai@gmail.com}
 

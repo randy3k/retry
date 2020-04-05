@@ -10,6 +10,7 @@ retry(
   until = .default_until,
   silent = TRUE,
   timeout = Inf,
+  max_tries = Inf,
   interval = 0.1
 )
 }
@@ -20,7 +21,7 @@ retry(
 
 \item{until}{a function of two aruments. This function is used to check if we need to
 re-evaluate \code{expr}. The first argument is the result of \code{expr} and the second argument
-is the potential error condition when \code{expr} is evaluated. The `retry` function returns the
+is the potential error condition when \code{expr} is evaluated. \code{retry} returns the
 result of \code{expr} if \code{until} returns \code{TRUE}.
 Default value is \code{function(res, cnd) \{is.null(cnd)\}}.
 It could be also a one sided formula that is later converted to a function
@@ -29,6 +30,8 @@ using \code{rlang::as_function}.}
 \item{silent}{suppress messages and warnings}
 
 \item{timeout}{raise an error if this amount of time in second has passed.}
+
+\item{max_tries}{maximum number of attempts}
 
 \item{interval}{delay between retries.}
 }

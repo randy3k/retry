@@ -123,6 +123,7 @@
   <span class='kw'>until</span> <span class='kw'>=</span> <span class='no'>.default_until</span>,
   <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='kw'>max_tries</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>0.1</span>
 )</pre>
 
@@ -141,7 +142,7 @@
       <th>until</th>
       <td><p>a function of two aruments. This function is used to check if we need to
 re-evaluate <code>expr</code>. The first argument is the result of <code>expr</code> and the second argument
-is the potential error condition when <code>expr</code> is evaluated. The `retry` function returns the
+is the potential error condition when <code>expr</code> is evaluated. <code>retry</code> returns the
 result of <code>expr</code> if <code>until</code> returns <code>TRUE</code>.
 Default value is <code>function(res, cnd) {is.null(cnd)}</code>.
 It could be also a one sided formula that is later converted to a function
@@ -154,6 +155,10 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
     <tr>
       <th>timeout</th>
       <td><p>raise an error if this amount of time in second has passed.</p></td>
+    </tr>
+    <tr>
+      <th>max_tries</th>
+      <td><p>maximum number of attempts</p></td>
     </tr>
     <tr>
       <th>interval</th>
@@ -172,14 +177,14 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
   <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>t</span> - <span class='no'>s</span>)
 }
 <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.03177 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='no'>s</span>, <span class='fl'>1</span>))  <span class='co'># retry until success</span></div><div class='output co'>#&gt; Time difference of 1.024331 secs</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='co'># this won't work because each retry reruns Sys.time()</span>
   <span class='fu'>retry</span>(<span class='fu'>elapse</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='fl'>1</span>), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 }
 
 <span class='co'># instead, we could use quasiquotation</span>
-<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.023332 secs</div><div class='input'>
+<span class='fu'>retry</span>(<span class='fu'>elapse</span>(!!(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()), <span class='fl'>1</span>))</div><div class='output co'>#&gt; Time difference of 1.023705 secs</div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>
 <span class='no'>counter</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='no'>x</span> + <span class='fl'>1</span>
