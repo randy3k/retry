@@ -25,7 +25,7 @@ retry(
 \item{upon}{a vector of condition classes. The expression will be retried if a
 condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
 
-\item{when}{a scalar string that is contained in the message of the condition.}
+\item{when}{regular expression pattern that matches the message of the condition.}
 
 \item{until}{a function of two aruments. This function is used to check if we need to
 retry \code{expr}. The first argument is the result of \code{expr} and the second argument
@@ -37,7 +37,7 @@ using \code{rlang::as_function}.}
 
 \item{silent}{suppress messages and warnings}
 
-\item{timeout}{raise an error if this amount of time in second has passed.}
+\item{timeout}{raise an error if this amount of time in seconds has passed.}
 
 \item{max_tries}{maximum number of attempts}
 
