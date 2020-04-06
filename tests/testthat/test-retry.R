@@ -23,6 +23,18 @@ test_that("timeout works", {
   expect_error(retry(stop(), timeout = 0.1), "timeout")
 })
 
+test_that("when clause works", {
+  z <- 0
+  f <- function() {
+    if (z == 0) {
+      z <<- 1
+      stop("random error")
+    }
+    stop("another error")
+  }
+  expect_error(retry(f(), when = "random error"), "another error")
+})
+
 test_that("max_tries works", {
   x <- 0
   counter <- function() {
