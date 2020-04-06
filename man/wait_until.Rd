@@ -31,4 +31,9 @@ Block the current runtime until the expression returns \code{TRUE}.
 s <- Sys.time()
 system.time(wait_until(Sys.time() - s > 1))
 
+z <- 0
+later::later(function() z <<- 1, 1)
+wait_until(z == 1)
+z == 1
+
 }

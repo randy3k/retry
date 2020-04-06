@@ -10,6 +10,7 @@
 #' @param envir the environment in which the expression is to be evaluated.
 #' @param upon a vector of condition classes. The expression will be retried if a
 #' condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.
+#' @param when a scalar string that is contained in the message of the condition.
 #' @param until a function of two aruments. This function is used to check if we need to
 #' retry \code{expr}. The first argument is the result of \code{expr} and the second argument
 #' is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
@@ -23,35 +24,23 @@
 #' @param interval delay between retries.
 #' @param later_run_now execute \code{later::run_now()} periodically when \code{later} is loaded?
 #' @examples
-#' retry(10)  # returns 10 immediately
+#' retry(10)  # returns immediately
 #'
-#' elapse <- function(s, by) {
-#'   t <- Sys.time()
-#'   if (t - s < by) {
-#'     stop()
-#'   }
-#'   return(t - s)
+#' f <- function(x) {
+#'     if (runif(1) < 0.9) {
+#'         stop("random error")
+#'     }
+#'     x + 1
 #' }
-#' s <- Sys.time()
-#' retry(elapse(s, 1))  # retry until success
+#' # keep retring when there is a random error
+#' retry(f(1), when = "random error")
+#' # keep retring until a condition is met
+#' retry(f(1), until = ~ . == 2)
 #'
 #' \dontrun{
-#'   # this won't work because each retry reruns Sys.time()
-#'   retry(elapse(Sys.time(), 1), timeout = 3)
+#'   # it doesn't capture the error of "a" + 1
+#'   retry(f("a"), when = "random error")
 #' }
-#'
-#' # instead, we could use quasiquotation
-#' retry(elapse(!!(Sys.time()), 1))
-#'
-#' x <- 0
-#' counter <- function() {
-#'   x <<- x + 1
-#'   x
-#' }
-#' retry(counter(), until = function(res, cnd) res == 10)
-#'
-#' x <- 0
-#' retry(counter(), until = ~ . == 10)
 #'
 #' \dontrun{
 #'   # an error is raised after 1 second
@@ -60,18 +49,20 @@
 #'   # timeout also works for indefinite R code
 #'   retry(while(TRUE) {}, timeout = 1)
 #' }
+#'
 #' @export
 retry <- function(expr,
                   envir = parent.frame(),
                   upon = "error",
+                  when = NULL,
                   until = no_conditions_thrown,
-                  silent = TRUE,
+                  silent = FALSE,
                   timeout = Inf,
                   max_tries = Inf,
                   interval = 0.1,
                   later_run_now = FALSE) {
     expr <- enexpr(expr)
-    until <- as_function(until)
+    done <- done_factory(when, as_function(until))
     later_loaded <- isTRUE(later_run_now) && "later" %in% loadedNamespaces()
 
     t1 <- Sys.time()
@@ -80,16 +71,16 @@ retry <- function(expr,
     while (TRUE) {
         remaining <- t1 + timeout - Sys.time()
         if (remaining <= 0) {
-            stop("timeout exceeded.")
+            abort("timeout exceeded.")
         }
         once <- run_once(expr, envir, upon = upon, timeout = remaining, silent = silent)
         trial <- trial + 1
         res <- once$result
-        cnd <- once$error
+        cnd <- once$condition
         if (later_loaded) {
             later::run_now()
         }
-        if (isTRUE(until(res, cnd))) {
+        if (isTRUE(done(res, cnd))) {
             if (!is.null(cnd)) {
                 cnd_signal(cnd)
             }
@@ -100,9 +91,20 @@ retry <- function(expr,
             }
         }
         if (trial >= max_tries) {
-            stop("maximum number of tries exceeded.")
+            abort("maximum number of tries exceeded.")
         }
         Sys.sleep(interval)
+    }
+}
+
+
+done_factory <- function(when, until) {
+    function(res, cnd) {
+        if (!is.null(when) && !is.null(cnd) &&
+                !grepl(when, conditionMessage(cnd))) {
+            return(TRUE)
+        }
+        until(res, cnd)
     }
 }
 
@@ -133,11 +135,11 @@ run_once <- function(expr, envir, upon, timeout, silent) {
 
     if (is.null(cnd)) {
         return(
-            list(result = res$value, visible = res$visible, error = NULL)
+            list(result = res$value, visible = res$visible, condition = NULL)
         )
     } else {
         return(
-            list(result = NULL, visible = FALSE, error = cnd)
+            list(result = NULL, visible = FALSE, condition = cnd)
         )
     }
 }

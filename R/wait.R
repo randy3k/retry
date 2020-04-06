@@ -9,6 +9,11 @@
 #' s <- Sys.time()
 #' system.time(wait_until(Sys.time() - s > 1))
 #'
+#' z <- 0
+#' later::later(function() z <<- 1, 1)
+#' wait_until(z == 1)
+#' z == 1
+#'
 #' @export
 wait_until <- function(expr,
                        envir = parent.frame(),

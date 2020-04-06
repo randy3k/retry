@@ -8,8 +8,9 @@ retry(
   expr,
   envir = parent.frame(),
   upon = "error",
+  when = NULL,
   until = no_conditions_thrown,
-  silent = TRUE,
+  silent = FALSE,
   timeout = Inf,
   max_tries = Inf,
   interval = 0.1,
@@ -23,6 +24,8 @@ retry(
 
 \item{upon}{a vector of condition classes. The expression will be retried if a
 condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
+
+\item{when}{a scalar string that is contained in the message of the condition.}
 
 \item{until}{a function of two aruments. This function is used to check if we need to
 retry \code{expr}. The first argument is the result of \code{expr} and the second argument
@@ -46,35 +49,23 @@ using \code{rlang::as_function}.}
 Retry an expression until either timeout is exceeded or a condition is fullfilled.
 }
 \examples{
-retry(10)  # returns 10 immediately
+retry(10)  # returns immediately
 
-elapse <- function(s, by) {
-  t <- Sys.time()
-  if (t - s < by) {
-    stop()
-  }
-  return(t - s)
+f <- function(x) {
+    if (runif(1) < 0.9) {
+        stop("random error")
+    }
+    x + 1
 }
-s <- Sys.time()
-retry(elapse(s, 1))  # retry until success
+# keep retring when there is a random error
+retry(f(1), when = "random error")
+# keep retring until a condition is met
+retry(f(1), until = ~ . == 2)
 
 \dontrun{
-  # this won't work because each retry reruns Sys.time()
-  retry(elapse(Sys.time(), 1), timeout = 3)
+  # it doesn't capture the error of "a" + 1
+  retry(f("a"), when = "random error")
 }
-
-# instead, we could use quasiquotation
-retry(elapse(!!(Sys.time()), 1))
-
-x <- 0
-counter <- function() {
-  x <<- x + 1
-  x
-}
-retry(counter(), until = function(res, cnd) res == 10)
-
-x <- 0
-retry(counter(), until = ~ . == 10)
 
 \dontrun{
   # an error is raised after 1 second
@@ -83,4 +74,5 @@ retry(counter(), until = ~ . == 10)
   # timeout also works for indefinite R code
   retry(while(TRUE) {}, timeout = 1)
 }
+
 }

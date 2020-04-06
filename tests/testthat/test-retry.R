@@ -12,7 +12,7 @@ test_that("retry works", {
     "hello")
   expect_equal(x, 0)
 
-  expect_silent(retry(message("hello")))
+  expect_silent(retry(message("hello"), silent = TRUE))
   expect_message(retry(message("hello"), silent = FALSE), "hello")
 })
 

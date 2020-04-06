@@ -25,34 +25,27 @@ devtools::install_github("randy3k/retry")
 
 ## Example
 
-We are going to use [future](https://github.com/HenrikBengtsson/future) to motivate some uses of `retry` and `wait_until`.
+Some examples of `retry` and `wait_until`.
 ```r
 library(retry)
-library(future)
-plan(multiprocess)
 
-path <- tempfile()
-f1 <- future({
-    Sys.sleep(1)
-    cat("hello\n", file = path)
-})
-retry(readLines(path), timeout = 5)
-#> [1] "hello"
+f <- function(x) {
+    if (runif(1) < 0.9) {
+        stop("random error")
+    }
+    x + 1
+}
 
+# keep retring when there is a random error
+retry(f(1), when = "random error")
+#> [1] 2
+# keep retring until a condition is met
+retry(f(1), until = ~ . == 2)
+#> [1] 2
 
-f2 <- future({
-    Sys.sleep(1)
-    cat("world\n", file = path, append = TRUE)
-})
-retry(readLines(path), until = ~ "world" %in% ., timeout = 5)
-#> [1] "hello" "world"
-
-
-f3 <- future({
-    Sys.sleep(1)
-    cat("hi\n", file = path, append = TRUE)
-})
-wait_until(resolved(f3))
-readLines(path)
-#> [1] "hello" "world", "hi"
+z <- 0
+later::later(function() z <<- 1, 1)
+wait_until(z == 1)
+z
+#> [1] 1
 ```
