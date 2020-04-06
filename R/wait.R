@@ -3,7 +3,7 @@
 #' @param envir the environment in which the expression is to be evaluated.
 #' @param timeout raise an error if this amount of time in second has passed.
 #' @param interval delay between retries.
-#' @param later_run_now execute \code{later::run_now()} periodically?
+#' @param later_run_now execute \code{later::run_now()} periodically \code{later} is loaded?
 #' @examples
 #'
 #' s <- Sys.time()

@@ -21,7 +21,7 @@
 #' @param timeout raise an error if this amount of time in second has passed.
 #' @param max_tries maximum number of attempts
 #' @param interval delay between retries.
-#' @param ... internal use only
+#' @param later_run_now execute \code{later::run_now()} periodically when \code{later} is loaded?
 #' @examples
 #' retry(10)  # returns 10 immediately
 #'
@@ -69,11 +69,10 @@ retry <- function(expr,
                   timeout = Inf,
                   max_tries = Inf,
                   interval = 0.1,
-                  ...) {
+                  later_run_now = FALSE) {
     expr <- enexpr(expr)
     until <- as_function(until)
-    ellipsis <- list(...)
-    later_loaded <- isTRUE(ellipsis$later_run_now) && "later" %in% loadedNamespaces()
+    later_loaded <- isTRUE(later_run_now) && "later" %in% loadedNamespaces()
 
     t1 <- Sys.time()
     trial <- 0

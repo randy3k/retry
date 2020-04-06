@@ -21,7 +21,7 @@ wait_until(
 
 \item{interval}{delay between retries.}
 
-\item{later_run_now}{execute \code{later::run_now()} periodically?}
+\item{later_run_now}{execute \code{later::run_now()} periodically \code{later} is loaded?}
 }
 \description{
 Block the current runtime until the expression returns \code{TRUE}.
