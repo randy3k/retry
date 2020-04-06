@@ -73,7 +73,7 @@ retry <- function(expr,
     expr <- enexpr(expr)
     until <- as_function(until)
     ellipsis <- list(...)
-    use_later <- isTRUE(ellipsis$later_run_now) && requireNamespace("later", quietly = TRUE)
+    later_loaded <- isTRUE(ellipsis$later_run_now) && "later" %in% loadedNamespaces()
 
     t1 <- Sys.time()
     trial <- 0
@@ -87,7 +87,7 @@ retry <- function(expr,
         trial <- trial + 1
         res <- once$result
         cnd <- once$error
-        if (use_later) {
+        if (later_loaded) {
             later::run_now()
         }
         if (isTRUE(until(res, cnd))) {
