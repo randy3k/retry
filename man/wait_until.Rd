@@ -13,7 +13,7 @@ wait_until(
 )
 }
 \arguments{
-\item{expr}{the expression to check}
+\item{expr}{an expression to check}
 
 \item{envir}{the environment in which the expression is to be evaluated.}
 

@@ -1,5 +1,5 @@
 #' Block the current runtime until the expression returns \code{TRUE}.
-#' @param expr the expression to check
+#' @param expr an expression to check
 #' @param envir the environment in which the expression is to be evaluated.
 #' @param timeout raise an error if this amount of time in second has passed.
 #' @param interval delay between retries.

@@ -8,8 +8,8 @@
 #' Retry an expression until either timeout is exceeded or a condition is fullfilled.
 #' @param expr an expression to be evaluated, quasiquotation is supported.
 #' @param envir the environment in which the expression is to be evaluated.
-#' @param upon a vector of condition classes. The expression will be retried if a
-#' condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.
+#' @param upon a vector of condition classes. The expression will be evaluated again after
+#' the delay if a condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.
 #' @param when regular expression pattern that matches the message of the condition.
 #' @param until a function of two aruments. This function is used to check if we need to
 #' retry \code{expr}. The first argument is the result of \code{expr} and the second argument
@@ -24,7 +24,7 @@
 #' @param interval delay between retries.
 #' @param later_run_now execute \code{later::run_now()} periodically when \code{later} is loaded?
 #' @examples
-#' retry(10)  # returns immediately
+#' retry(10, until = ~TRUE)  # returns immediately
 #'
 #' f <- function(x) {
 #'     if (runif(1) < 0.9) {

@@ -9,7 +9,7 @@ retry(
   envir = parent.frame(),
   upon = "error",
   when = NULL,
-  until = no_conditions_thrown,
+  until = NULL,
   silent = FALSE,
   timeout = Inf,
   max_tries = Inf,
@@ -22,8 +22,8 @@ retry(
 
 \item{envir}{the environment in which the expression is to be evaluated.}
 
-\item{upon}{a vector of condition classes. The expression will be retried if a
-condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
+\item{upon}{a vector of condition classes. The expression will be evaluated again after
+the delay if a condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
 
 \item{when}{regular expression pattern that matches the message of the condition.}
 
@@ -49,7 +49,7 @@ using \code{rlang::as_function}.}
 Retry an expression until either timeout is exceeded or a condition is fullfilled.
 }
 \examples{
-retry(10)  # returns immediately
+retry(10, until = ~TRUE)  # returns immediately
 
 f <- function(x) {
     if (runif(1) < 0.9) {
@@ -69,10 +69,10 @@ retry(f(1), until = ~ . == 2)
 
 \dontrun{
   # an error is raised after 1 second
-  retry(stop(), timeout = 1)
+  retry(stop("foo"), when = "foo", timeout = 1)
 
   # timeout also works for indefinite R code
-  retry(while(TRUE) {}, timeout = 1)
+  retry(while(TRUE) {}, until = ~FALSE, timeout = 1)
 }
 
 }
