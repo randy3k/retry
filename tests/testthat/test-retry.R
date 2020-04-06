@@ -1,6 +1,11 @@
 test_that("retry works", {
-  expect_equal(retry(10), 10)
+  expect_equal(retry(10, when = "some error"), 10)
   expect_equal(retry(10, until = ~TRUE), 10)
+  expect_silent(retry(message("hello"), when = "some error", silent = TRUE))
+  expect_message(retry(message("hello"), when = "some error", silent = FALSE), "hello")
+})
+
+test_that("upon works", {
   s <- Sys.time()
   x <- 0
   expect_message(
@@ -11,19 +16,9 @@ test_that("retry works", {
       upon = "message", until = ~ Sys.time() - s > 1),
     "hello")
   expect_equal(x, 0)
-
-  expect_silent(retry(message("hello"), silent = TRUE))
-  expect_message(retry(message("hello"), silent = FALSE), "hello")
 })
 
-test_that("timeout works", {
-  x <- 0
-  later::later(function() x <<- 1, 0.5)
-  expect_true(retry(later::run_now() || TRUE, until = ~ x == 1, timeout = 5))
-  expect_error(retry(stop(), timeout = 0.1), "timeout")
-})
-
-test_that("when clause works", {
+test_that("when works", {
   z <- 0
   f <- function() {
     if (z == 0) {
@@ -34,6 +29,14 @@ test_that("when clause works", {
   }
   expect_error(retry(f(), when = "random error"), "another error")
 })
+
+test_that("timeout works", {
+  x <- 0
+  later::later(function() x <<- 1, 0.5)
+  expect_true(retry(TRUE, until = ~ x == 1, later_run_now = TRUE))
+  expect_error(retry(stop("foo"), when = "foo", timeout = 0.1), "timeout")
+})
+
 
 test_that("max_tries works", {
   x <- 0

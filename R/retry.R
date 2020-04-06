@@ -44,10 +44,10 @@
 #'
 #' \dontrun{
 #'   # an error is raised after 1 second
-#'   retry(stop(), timeout = 1)
+#'   retry(stop("foo"), when = "foo", timeout = 1)
 #'
 #'   # timeout also works for indefinite R code
-#'   retry(while(TRUE) {}, timeout = 1)
+#'   retry(while(TRUE) {}, until = ~FALSE, timeout = 1)
 #' }
 #'
 #' @export
@@ -55,14 +55,17 @@ retry <- function(expr,
                   envir = parent.frame(),
                   upon = "error",
                   when = NULL,
-                  until = no_conditions_thrown,
+                  until = NULL,
                   silent = FALSE,
                   timeout = Inf,
                   max_tries = Inf,
                   interval = 0.1,
                   later_run_now = FALSE) {
+    if (is.null(until) && is.null(when)) {
+        abort("require at least one of the parameters `when` and `until`.")
+    }
     expr <- enexpr(expr)
-    done <- done_factory(when, as_function(until))
+    done <- done_factory(when, until)
     later_loaded <- isTRUE(later_run_now) && "later" %in% loadedNamespaces()
 
     t1 <- Sys.time()
@@ -99,12 +102,20 @@ retry <- function(expr,
 
 
 done_factory <- function(when, until) {
-    function(res, cnd) {
-        if (!is.null(when) && !is.null(cnd) &&
-                !grepl(when, conditionMessage(cnd))) {
-            return(TRUE)
+    if (is.null(until)) {
+        until <- no_conditions_thrown
+    }
+    until <- as_function(until)
+
+    if (is.null(when)) {
+        until
+    } else {
+        function(res, cnd) {
+            if (!is.null(cnd) && !grepl(when, conditionMessage(cnd))) {
+                return(TRUE)
+            }
+            until(res, cnd)
         }
-        until(res, cnd)
     }
 }
 
