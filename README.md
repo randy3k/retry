@@ -42,6 +42,9 @@ retry(f(1), when = "random error")
 # keep retring until a condition is met
 retry(f(1), until = ~ . == 2)
 #> [1] 2
+# or using one sided formula
+retry(f(1), until = ~ . == 2)
+#> [1] 2
 
 z <- 0
 later::later(function() z <<- 1, 1)

@@ -1,4 +1,5 @@
 test_that("retry works", {
+  expect_error(retry(10), "require")
   expect_equal(retry(10, when = "some error"), 10)
   expect_equal(retry(10, until = ~TRUE), 10)
   expect_silent(retry(message("hello"), when = "some error", silent = TRUE))
@@ -48,11 +49,4 @@ test_that("max_tries works", {
     retry(counter(), until = ~FALSE, max_tries = 10),
     "maximum number of tries exceeded")
   expect_equal(x, 10)
-})
-
-test_that("wait_until works", {
-    x <- 0
-    later::later(function() x <<- 1, 0.5)
-    wait_until(x == 1, timeout = 5)
-    expect_equal(x, 1)
 })

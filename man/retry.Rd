@@ -6,10 +6,10 @@
 \usage{
 retry(
   expr,
-  envir = parent.frame(),
   upon = "error",
   when = NULL,
   until = NULL,
+  envir = parent.frame(),
   silent = FALSE,
   timeout = Inf,
   max_tries = Inf,
@@ -18,22 +18,22 @@ retry(
 )
 }
 \arguments{
-\item{expr}{an expression to be evaluated, quasiquotation is supported.}
-
-\item{envir}{the environment in which the expression is to be evaluated.}
+\item{expr}{an expression to be evaluated, supports quasiquotation.}
 
 \item{upon}{a vector of condition classes. The expression will be evaluated again after
 the delay if a condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
 
 \item{when}{regular expression pattern that matches the message of the condition.}
 
-\item{until}{a function of two aruments. This function is used to check if we need to
+\item{until}{a function of two arguments. This function is used to check if we need to
 retry \code{expr}. The first argument is the result of \code{expr} and the second argument
 is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
 result of \code{expr} if \code{until} returns \code{TRUE}.
 The default behavior is to retry unless no conditions are thrown.
 It could be also a one sided formula that is later converted to a function
 using \code{rlang::as_function}.}
+
+\item{envir}{the environment in which the expression is to be evaluated.}
 
 \item{silent}{suppress messages and warnings}
 
@@ -46,7 +46,7 @@ using \code{rlang::as_function}.}
 \item{later_run_now}{execute \code{later::run_now()} periodically when \code{later} is loaded?}
 }
 \description{
-Retry an expression until either timeout is exceeded or a condition is fullfilled.
+Retry an expression until a condition is met or timeout is exceeded.
 }
 \examples{
 retry(10, until = ~TRUE)  # returns immediately
@@ -60,6 +60,8 @@ f <- function(x) {
 # keep retring when there is a random error
 retry(f(1), when = "random error")
 # keep retring until a condition is met
+retry(f(1), until = function(val, cnd) val == 2)
+# or using one sided formula
 retry(f(1), until = ~ . == 2)
 
 \dontrun{

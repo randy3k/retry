@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Retry an expression — retry" />
-<meta property="og:description" content="Retry an expression until either timeout is exceeded or a condition is fullfilled." />
+<meta property="og:description" content="Retry an expression until a condition is met or timeout is exceeded." />
 
 
 
@@ -114,15 +114,15 @@
     </div>
 
     <div class="ref-description">
-    <p>Retry an expression until either timeout is exceeded or a condition is fullfilled.</p>
+    <p>Retry an expression until a condition is met or timeout is exceeded.</p>
     </div>
 
     <pre class="usage"><span class='fu'>retry</span>(
   <span class='no'>expr</span>,
-  <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(),
   <span class='kw'>upon</span> <span class='kw'>=</span> <span class='st'>"error"</span>,
   <span class='kw'>when</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>until</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(),
   <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>max_tries</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
@@ -135,11 +135,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>expr</th>
-      <td><p>an expression to be evaluated, quasiquotation is supported.</p></td>
-    </tr>
-    <tr>
-      <th>envir</th>
-      <td><p>the environment in which the expression is to be evaluated.</p></td>
+      <td><p>an expression to be evaluated, supports quasiquotation.</p></td>
     </tr>
     <tr>
       <th>upon</th>
@@ -152,13 +148,17 @@ the delay if a condition is thrown. See the <code>classes</code> parameter of <c
     </tr>
     <tr>
       <th>until</th>
-      <td><p>a function of two aruments. This function is used to check if we need to
+      <td><p>a function of two arguments. This function is used to check if we need to
 retry <code>expr</code>. The first argument is the result of <code>expr</code> and the second argument
 is the condition thrown when <code>expr</code> was evaluated. <code>retry</code> would return the
 result of <code>expr</code> if <code>until</code> returns <code>TRUE</code>.
 The default behavior is to retry unless no conditions are thrown.
 It could be also a one sided formula that is later converted to a function
 using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>envir</th>
+      <td><p>the environment in which the expression is to be evaluated.</p></td>
     </tr>
     <tr>
       <th>silent</th>
@@ -193,6 +193,7 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
 }
 <span class='co'># keep retring when there is a random error</span>
 <span class='fu'>retry</span>(<span class='fu'>f</span>(<span class='fl'>1</span>), <span class='kw'>when</span> <span class='kw'>=</span> <span class='st'>"random error"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># keep retring until a condition is met</span>
+<span class='fu'>retry</span>(<span class='fu'>f</span>(<span class='fl'>1</span>), <span class='kw'>until</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>val</span>, <span class='no'>cnd</span>) <span class='no'>val</span> <span class='kw'>==</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># or using one sided formula</span>
 <span class='fu'>retry</span>(<span class='fu'>f</span>(<span class='fl'>1</span>), <span class='kw'>until</span> <span class='kw'>=</span> ~ <span class='no'>.</span> <span class='kw'>==</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='co'># it doesn't capture the error of "a" + 1</span>

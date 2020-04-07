@@ -98,6 +98,9 @@
 <span class="co"># keep retring until a condition is met</span>
 <span class="fu"><a href="reference/retry.html">retry</a></span>(<span class="fu">f</span>(<span class="fl">1</span>), <span class="kw">until</span> <span class="kw">=</span> ~ <span class="no">.</span> <span class="kw">==</span> <span class="fl">2</span>)
 <span class="co">#&gt; [1] 2</span>
+<span class="co"># or using one sided formula</span>
+<span class="fu"><a href="reference/retry.html">retry</a></span>(<span class="fu">f</span>(<span class="fl">1</span>), <span class="kw">until</span> <span class="kw">=</span> ~ <span class="no">.</span> <span class="kw">==</span> <span class="fl">2</span>)
+<span class="co">#&gt; [1] 2</span>
 
 <span class="no">z</span> <span class="kw">&lt;-</span> <span class="fl">0</span>
 <span class="kw pkg">later</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/later/man/later.html">later</a></span>(<span class="kw">function</span>() <span class="no">z</span> <span class="kw">&lt;&lt;-</span> <span class="fl">1</span>, <span class="fl">1</span>)

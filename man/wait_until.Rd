@@ -2,7 +2,7 @@
 % Please edit documentation in R/wait.R
 \name{wait_until}
 \alias{wait_until}
-\title{Block the current runtime until the expression returns \code{TRUE}.}
+\title{Wait until a condition is met}
 \usage{
 wait_until(
   expr,
@@ -13,7 +13,7 @@ wait_until(
 )
 }
 \arguments{
-\item{expr}{an expression to check}
+\item{expr}{an expression to check, supports quasiquotation.}
 
 \item{envir}{the environment in which the expression is to be evaluated.}
 

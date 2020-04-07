@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • retry</title>
+<title>Trigger an expression once a condition is met. — once • retry</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Trigger an expression once a condition is met. — once" />
+<meta property="og:description" content="Repeatedly examine the given expression until it returns TRUE. Then trigger the evaluation
+of another expression." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -105,60 +107,43 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Trigger an expression once a condition is met.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/randy3k/retry/blob/master/R/once.R'><code>R/once.R</code></a></small>
+    <div class="hidden name"><code>once.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Repeatedly examine the given expression until it returns <code>TRUE</code>. Then trigger the evaluation
+of another expression.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>once</span>(<span class='no'>expr</span>, <span class='no'>then</span>, <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(), <span class='no'>...</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="once.html">once()</a></code> </p>
-        </td>
-        <td><p>Trigger an expression once a condition is met.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="retry-package.html">retry-package</a></code> </p>
-        </td>
-        <td><p>retry: Retry an Expression</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="retry.html">retry()</a></code> </p>
-        </td>
-        <td><p>Retry an expression</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="wait_until.html">wait_until()</a></code> </p>
-        </td>
-        <td><p>Wait until a condition is met</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>expr</th>
+      <td><p>the expression to check</p></td>
+    </tr>
+    <tr>
+      <th>then</th>
+      <td><p>the expression to be execuated once</p></td>
+    </tr>
+    <tr>
+      <th>envir</th>
+      <td><p>the environment in which the expressions are to be evaluated.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other parameters passed to <code>wait_until</code>.</p></td>
+    </tr>
     </table>
-  </div>
 
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
