@@ -6,7 +6,7 @@
 #' @param expr the expression to check
 #' @param then the expression to be execuated once
 #' @param envir the environment in which the expressions are to be evaluated.
-#' @param ... other parameters passed to \code{wait_until}.
+#' @param ... other parameters passed to \code{\link{wait_until}}.
 #' @export
 once <- function(expr, then, envir = parent.frame(), ...) {
     if (missing(then)) {

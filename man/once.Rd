@@ -13,7 +13,7 @@ once(expr, then, envir = parent.frame(), ...)
 
 \item{envir}{the environment in which the expressions are to be evaluated.}
 
-\item{...}{other parameters passed to \code{wait_until}.}
+\item{...}{other parameters passed to \code{\link{wait_until}}.}
 }
 \description{
 Repeatedly examine the given expression until it returns \code{TRUE}. Then trigger the evaluation
