@@ -104,19 +104,26 @@ retry <- function(expr,
 
 
 done_factory <- function(when, until) {
-    if (is.null(until)) {
-        until <- no_conditions_thrown
-    }
-    until <- as_function(until)
-
     if (is.null(when)) {
-        until
+        if (is.null(until)) {
+            until <- no_conditions_thrown
+        }
+        as_function(until)
     } else {
-        function(val, cnd) {
-            if (!is.null(cnd) && !grepl(when, conditionMessage(cnd))) {
-                return(TRUE)
+        if (is.null(until)) {
+            function(val, cnd) {
+                if (is.null(cnd) || !grepl(when, conditionMessage(cnd))) {
+                    return(TRUE)
+                }
             }
-            until(val, cnd)
+        } else {
+            until <- as_function(until)
+            function(val, cnd) {
+                if (!is.null(cnd) && grepl(when, conditionMessage(cnd))) {
+                    return(FALSE)
+                }
+                until(val, cnd)
+            }
         }
     }
 }

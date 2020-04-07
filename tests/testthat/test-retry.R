@@ -24,11 +24,11 @@ test_that("when works", {
   f <- function() {
     if (z == 0) {
       z <<- 1
-      stop("random error")
+      stop("an error")
     }
     stop("another error")
   }
-  expect_error(retry(f(), when = "random error"), "another error")
+  expect_error(retry(f(), when = "an error"), "another error")
 })
 
 test_that("timeout works", {
