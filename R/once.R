@@ -1,4 +1,4 @@
-#' Trigger an expression once a condition is met.
+#' Evaluate an expression once a condition is met.
 #'
 #' Repeatedly examine the given expression until it returns \code{TRUE}. Then trigger the evaluation
 #' of another expression.

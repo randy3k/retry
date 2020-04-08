@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retry an expression — retry • retry</title>
+<title>Repeatedly evaluate an expression — retry • retry</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Retry an expression — retry" />
-<meta property="og:description" content="Retry an expression until a condition is met or timeout is exceeded." />
+<meta property="og:title" content="Repeatedly evaluate an expression — retry" />
+<meta property="og:description" content="Repeatedly evaluate an expression until a condition is met or timeout is exceeded." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">retry</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -108,13 +108,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retry an expression</h1>
+    <h1>Repeatedly evaluate an expression</h1>
     <small class="dont-index">Source: <a href='https://github.com/randy3k/retry/blob/master/R/retry.R'><code>R/retry.R</code></a></small>
     <div class="hidden name"><code>retry.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retry an expression until a condition is met or timeout is exceeded.</p>
+    <p>Repeatedly evaluate an expression until a condition is met or timeout is exceeded.</p>
     </div>
 
     <pre class="usage"><span class='fu'>retry</span>(
@@ -144,15 +144,14 @@ the delay if a condition is thrown. See the <code>classes</code> parameter of <c
     </tr>
     <tr>
       <th>when</th>
-      <td><p>regular expression pattern that matches the message of the condition.</p></td>
+      <td><p>regular expression pattern that matches the message of the condition. It is used to
+decide if we need to evaluate <code>expr</code>.</p></td>
     </tr>
     <tr>
       <th>until</th>
       <td><p>a function of two arguments. This function is used to check if we need to
-retry <code>expr</code>. The first argument is the result of <code>expr</code> and the second argument
-is the condition thrown when <code>expr</code> was evaluated. <code>retry</code> would return the
-result of <code>expr</code> if <code>until</code> returns <code>TRUE</code>.
-The default behavior is to retry unless no conditions are thrown.
+evaluate <code>expr</code>. The first argument is the result of <code>expr</code> and the second argument
+is the condition thrown when <code>expr</code> was evaluated.
 It could be also a one sided formula that is later converted to a function
 using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function</a></code>.</p></td>
     </tr>

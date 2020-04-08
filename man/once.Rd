@@ -2,7 +2,7 @@
 % Please edit documentation in R/once.R
 \name{once}
 \alias{once}
-\title{Trigger an expression once a condition is met.}
+\title{Evaluate an expression once a condition is met.}
 \usage{
 once(expr, then, envir = parent.frame(), ...)
 }

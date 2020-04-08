@@ -1,5 +1,17 @@
+---
+output:
+  github_document:
+    html_preview: false
+---
 
-# Repeatedly Evaluate Expressions
+```{r results='asis', echo = FALSE, eval = TRUE}
+d <- packageDescription("retry")
+```
+
+```{r results="asis", echo = FALSE, eval = TRUE}
+cat(c("# ", paste(trimws(strsplit(d$Title, "\n")[[1]]), collapse = " ")))
+```
+
 
 [![Github
 Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master)](https://github.com/randy3k/retry)
@@ -7,33 +19,30 @@ Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/retry)](https://cran.r-project.org/package=retry)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/retry)](https://cran.r-project.org/package=retry)
 
-Documentation:
-[http://randy3k.github.io/retry](https://randy3k.github.io/retry)
+Documentation: [http://randy3k.github.io/retry](https://randy3k.github.io/retry)
 
-Provide simple mechanism to repeatedly evaluate an expression until
-either it succeeds or timeout exceeded. It is useful in situations that
-random failures could happen.
+```{r results="asis", echo = FALSE, eval = TRUE}
+cat(d$Description)
+```
 
 ## Installation
 
-You can install the released version of retry from
-[CRAN](https://CRAN.R-project.org) with:
+You can install the released version of retry from [CRAN](https://CRAN.R-project.org) with:
 
-``` r
+```r
 install.packages("retry")
 ```
 
 The development version could be installed with:
 
-``` r
+```r
 devtools::install_github("randy3k/retry")
 ```
 
 ## Example
 
 Some examples of `retry` and `wait_until`.
-
-``` r
+```r
 library(retry)
 
 f <- function(x) {

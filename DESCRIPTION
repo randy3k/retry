@@ -1,13 +1,13 @@
 Package: retry
 Type: Package
-Title: Retry an Expression
-Version: 0.1.0.9999
+Title: Repeatedly Evaluate Expressions
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Randy",
              family = "Lai",
              role = c("aut", "cre"),
              email = "randy.cs.lai@gmail.com"))
-Description: The retry package provides a simple mechanism to repeatedly evaluate an expression until either it succeeds or timeout exceeded. It is useful in situations that random failures could happen.
+Description: Provide simple mechanism to repeatedly evaluate an expression until either it succeeds or timeout exceeded. It is useful in situations that random failures could happen.
 License: MIT + file LICENSE
 URL: https://github.com/randy3k/retry
 Encoding: UTF-8

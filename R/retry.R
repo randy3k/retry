@@ -3,19 +3,18 @@
 #' @aliases NULL
 "_PACKAGE"
 
-#' Retry an expression
+#' Repeatedly evaluate an expression
 #'
-#' Retry an expression until a condition is met or timeout is exceeded.
+#' Repeatedly evaluate an expression until a condition is met or timeout is exceeded.
 #'
 #' @param expr an expression to be evaluated, supports quasiquotation.
 #' @param upon a vector of condition classes. The expression will be evaluated again after
 #' the delay if a condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.
-#' @param when regular expression pattern that matches the message of the condition.
+#' @param when regular expression pattern that matches the message of the condition. It is used to
+#' decide if we need to evaluate \code{expr}.
 #' @param until a function of two arguments. This function is used to check if we need to
-#' retry \code{expr}. The first argument is the result of \code{expr} and the second argument
-#' is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
-#' result of \code{expr} if \code{until} returns \code{TRUE}.
-#' The default behavior is to retry unless no conditions are thrown.
+#' evaluate \code{expr}. The first argument is the result of \code{expr} and the second argument
+#' is the condition thrown when \code{expr} was evaluated.
 #' It could be also a one sided formula that is later converted to a function
 #' using \code{rlang::as_function}.
 #' @param envir the environment in which the expression is to be evaluated.
@@ -64,9 +63,6 @@ retry <- function(expr,
                   max_tries = Inf,
                   interval = 0.1,
                   later_run_now = FALSE) {
-    if (is.null(until) && is.null(when)) {
-        abort("require at least one of the parameters \"when\" and \"until\".")
-    }
     expr <- enexpr(expr)
     done <- done_factory(when, until)
     later_loaded <- isTRUE(later_run_now) && "later" %in% loadedNamespaces()
@@ -106,7 +102,7 @@ retry <- function(expr,
 done_factory <- function(when, until) {
     if (is.null(when)) {
         if (is.null(until)) {
-            until <- no_conditions_thrown
+            abort("require at least one of the parameters \"when\" and \"until\".")
         }
         as_function(until)
     } else {
@@ -126,11 +122,6 @@ done_factory <- function(when, until) {
             }
         }
     }
-}
-
-
-no_conditions_thrown <- function(val, cnd) {
-    is.null(cnd)
 }
 
 

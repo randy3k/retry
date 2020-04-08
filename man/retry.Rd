@@ -2,7 +2,7 @@
 % Please edit documentation in R/retry.R
 \name{retry}
 \alias{retry}
-\title{Retry an expression}
+\title{Repeatedly evaluate an expression}
 \usage{
 retry(
   expr,
@@ -23,13 +23,12 @@ retry(
 \item{upon}{a vector of condition classes. The expression will be evaluated again after
 the delay if a condition is thrown. See the \code{classes} parameter of \code{rlang::catch_cnd}.}
 
-\item{when}{regular expression pattern that matches the message of the condition.}
+\item{when}{regular expression pattern that matches the message of the condition. It is used to
+decide if we need to evaluate \code{expr}.}
 
 \item{until}{a function of two arguments. This function is used to check if we need to
-retry \code{expr}. The first argument is the result of \code{expr} and the second argument
-is the condition thrown when \code{expr} was evaluated. \code{retry} would return the
-result of \code{expr} if \code{until} returns \code{TRUE}.
-The default behavior is to retry unless no conditions are thrown.
+evaluate \code{expr}. The first argument is the result of \code{expr} and the second argument
+is the condition thrown when \code{expr} was evaluated.
 It could be also a one sided formula that is later converted to a function
 using \code{rlang::as_function}.}
 
@@ -46,7 +45,7 @@ using \code{rlang::as_function}.}
 \item{later_run_now}{execute \code{later::run_now()} periodically when \code{later} is loaded?}
 }
 \description{
-Retry an expression until a condition is met or timeout is exceeded.
+Repeatedly evaluate an expression until a condition is met or timeout is exceeded.
 }
 \examples{
 retry(10, until = ~TRUE)  # returns immediately
