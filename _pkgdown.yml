@@ -6,4 +6,3 @@ reference:
   - contents:
     - retry
     - wait_until
-    - once
