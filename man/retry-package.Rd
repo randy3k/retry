@@ -2,7 +2,7 @@
 % Please edit documentation in R/retry.R
 \docType{package}
 \name{retry-package}
-\title{retry: Repeatedly Evaluate Expressions}
+\title{retry: Repeated Evaluation}
 \description{
 Provide simple mechanism to repeatedly evaluate an expression until either it succeeds or timeout exceeded. It is useful in situations that random failures could happen.
 }

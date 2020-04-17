@@ -4,3 +4,5 @@
 ^docs$
 ^\.github$
 ^CRAN-RELEASE$
+^README\.Rmd
+^_pkgdown\.yml

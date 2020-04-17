@@ -1,6 +1,6 @@
 Package: retry
 Type: Package
-Title: Repeatedly Evaluate Expressions
+Title: Repeated Evaluation
 Version: 0.1.0
 Authors@R: 
     c(person(given = "Randy",

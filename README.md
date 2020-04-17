@@ -1,5 +1,5 @@
 
-# Repeatedly Evaluate Expressions
+# Repeated Evaluation
 
 [![Github
 Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master)](https://github.com/randy3k/retry)
@@ -46,8 +46,8 @@ f <- function(x) {
 # keep retring when there is a random error
 retry(f(1), when = "random error")
 #> [1] 2
-# keep retring until a condition is met
-retry(f(1), until = ~ . == 2)
+# keep retring until a requirement is satisified.
+retry(f(1), until = function(val, cnd) val == 2)
 #> [1] 2
 # or using one sided formula
 retry(f(1), until = ~ . == 2)
