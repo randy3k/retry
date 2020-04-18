@@ -5,11 +5,12 @@ output:
 ---
 
 ```{r results='asis', echo = FALSE, eval = TRUE}
-d <- packageDescription("retry")
+d <- read.dcf("DESCRIPTION")
 ```
 
 ```{r results="asis", echo = FALSE, eval = TRUE}
-cat(c("# ", paste(trimws(strsplit(d$Title, "\n")[[1]]), collapse = " ")))
+title <- d[colnames(d) == "Title"]
+cat(c("# ", paste(trimws(strsplit(title, "\n")[[1]]), collapse = " ")))
 ```
 
 
@@ -22,7 +23,7 @@ Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master
 Documentation: [http://randy3k.github.io/retry](https://randy3k.github.io/retry)
 
 ```{r results="asis", echo = FALSE, eval = TRUE}
-cat(d$Description)
+cat(d[colnames(d) == "Description"])
 ```
 
 ## Installation
