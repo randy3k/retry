@@ -39,18 +39,20 @@
 #' # or using one sided formula
 #' retry(f(1), until = ~ . == 2)
 #'
-#' \dontrun{
+#' try({
 #'   # it doesn't capture the error of "a" + 1
 #'   retry(f("a"), when = "random error")
-#' }
+#' })
 #'
-#' \dontrun{
+#' try({
 #'   # an error is raised after 1 second
 #'   retry(stop("foo"), when = "foo", timeout = 1)
+#' })
 #'
+#' try({
 #'   # timeout also works for indefinite R code
 #'   retry(while(TRUE) {}, until = ~FALSE, timeout = 1)
-#' }
+#' })
 #'
 #' @export
 retry <- function(expr,

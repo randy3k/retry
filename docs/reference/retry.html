@@ -194,18 +194,19 @@ using <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::
 <span class='fu'>retry</span>(<span class='fu'>f</span>(<span class='fl'>1</span>), <span class='kw'>when</span> <span class='kw'>=</span> <span class='st'>"random error"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># keep retring until a condition is met</span>
 <span class='fu'>retry</span>(<span class='fu'>f</span>(<span class='fl'>1</span>), <span class='kw'>until</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>val</span>, <span class='no'>cnd</span>) <span class='no'>val</span> <span class='kw'>==</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># or using one sided formula</span>
 <span class='fu'>retry</span>(<span class='fu'>f</span>(<span class='fl'>1</span>), <span class='kw'>until</span> <span class='kw'>=</span> ~ <span class='no'>.</span> <span class='kw'>==</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>({
   <span class='co'># it doesn't capture the error of "a" + 1</span>
   <span class='fu'>retry</span>(<span class='fu'>f</span>(<span class='st'>"a"</span>), <span class='kw'>when</span> <span class='kw'>=</span> <span class='st'>"random error"</span>)
-}
-
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+})</div><div class='output co'>#&gt; Error in x + 1 : non-numeric argument to binary operator</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>({
   <span class='co'># an error is raised after 1 second</span>
   <span class='fu'>retry</span>(<span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"foo"</span>), <span class='kw'>when</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-
+})</div><div class='output co'>#&gt; Error : timeout exceeded.</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>({
   <span class='co'># timeout also works for indefinite R code</span>
   <span class='fu'>retry</span>(<span class='kw'>while</span>(<span class='fl'>TRUE</span>) {}, <span class='kw'>until</span> <span class='kw'>=</span> ~<span class='fl'>FALSE</span>, <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-}</div></pre>
+})</div><div class='output co'>#&gt; Error : timeout exceeded.</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
