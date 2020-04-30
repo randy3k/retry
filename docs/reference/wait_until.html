@@ -155,7 +155,7 @@
     <pre class="examples"><div class='input'>
 <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()
 <span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span>(<span class='fu'>wait_until</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>() - <span class='no'>s</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt;    user  system elapsed 
-#&gt;   0.007   0.001   0.936 </div><div class='input'>
+#&gt;   0.005   0.000   1.026 </div><div class='input'>
 <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>
 <span class='kw pkg'>later</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/later/man/later.html'>later</a></span>(<span class='kw'>function</span>() <span class='no'>z</span> <span class='kw'>&lt;&lt;-</span> <span class='fl'>1</span>, <span class='fl'>1</span>)
 <span class='fu'>wait_until</span>(<span class='no'>z</span> <span class='kw'>==</span> <span class='fl'>1</span>)
@@ -176,7 +176,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
