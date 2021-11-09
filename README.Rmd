@@ -14,11 +14,10 @@ cat(c("# ", paste(trimws(strsplit(title, "\n")[[1]]), collapse = " ")))
 ```
 
 
-[![Github
-Action](https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master)](https://github.com/randy3k/retry)
+[![check](https://github.com/randy3k/retry/actions/workflows/check.yaml/badge.svg)](https://github.com/randy3k/retry/actions/workflows/check.yaml)
 [![codecov](https://codecov.io/gh/randy3k/retry/branch/master/graph/badge.svg)](https://codecov.io/gh/randy3k/retry)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/retry)](https://cran.r-project.org/package=retry)
-[![](https://cranlogs.r-pkg.org/badges/grand-total/retry)](https://cran.r-project.org/package=retry)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/retry)](https://cran.r-project.org/package=retry)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/retry)](https://cran.r-project.org/package=retry)
 
 
 Github: [https://github.com/randy3k/retry](https://github.com/randy3k/retry)
