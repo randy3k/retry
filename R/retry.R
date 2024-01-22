@@ -1,6 +1,5 @@
 #' @docType package
 #' @import rlang
-#' @aliases NULL
 "_PACKAGE"
 
 #' Repeatedly evaluate an expression
