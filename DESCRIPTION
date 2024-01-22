@@ -12,7 +12,6 @@ Description: Provide simple mechanism to repeatedly evaluate an expression until
 License: MIT + file LICENSE
 URL: https://github.com/randy3k/retry
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.3.0
 Suggests: 
     testthat (>= 2.1.0),
