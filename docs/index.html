@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,26 +33,20 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">retry</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/randy3k/retry/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/randy3k/retry/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -66,96 +62,102 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="repeated-evaluation" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#repeated-evaluation" class="anchor"></a>Repeated Evaluation</h1></div>
-
-<p>Github: <a href="https://github.com/randy3k/retry" class="uri">https://github.com/randy3k/retry</a></p>
-<p>Documentation: <a href="https://randy3k.github.io/retry" class="uri">https://randy3k.github.io/retry</a></p>
+<div class="section level1">
+<div class="page-header"><h1 id="repeated-evaluation">Repeated Evaluation<a class="anchor" aria-label="anchor" href="#repeated-evaluation"></a>
+</h1></div>
+<p><a href="https://github.com/randy3k/retry/actions/workflows/check.yaml" class="external-link"><img src="https://github.com/randy3k/retry/actions/workflows/check.yaml/badge.svg" alt="check"></a> <a href="https://codecov.io/gh/randy3k/retry" class="external-link"><img src="https://codecov.io/gh/randy3k/retry/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://cran.r-project.org/package=retry" class="external-link"><img src="http://www.r-pkg.org/badges/version/retry" alt="CRAN_Status_Badge"></a> <a href="https://cran.r-project.org/package=retry" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/retry"></a></p>
+<p>Github: <a href="https://github.com/randy3k/retry" class="external-link uri">https://github.com/randy3k/retry</a></p>
+<p>Documentation: <a href="https://randy3k.github.io/retry" class="external-link uri">https://randy3k.github.io/retry</a></p>
 <p>Provide simple mechanism to repeatedly evaluate an expression until either it succeeds or timeout exceeded. It is useful in situations that random failures could happen.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of retry from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"retry"</span>)</pre></div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the released version of retry from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"retry"</span><span class="op">)</span></span></code></pre></div>
 <p>The development version could be installed with:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"randy3k/retry"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"randy3k/retry"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <p>Some examples of <code>retry</code> and <code>wait_until</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">retry</span>)
-
-<span class="no">f</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>) {
-    <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">1</span>) <span class="kw">&lt;</span> <span class="fl">0.9</span>) {
-        <span class="fu"><a href="https://rdrr.io/r/base/stop.html">stop</a></span>(<span class="st">"random error"</span>)
-    }
-    <span class="no">x</span> + <span class="fl">1</span>
-}
-
-<span class="co"># keep retring when there is a random error</span>
-<span class="fu"><a href="reference/retry.html">retry</a></span>(<span class="fu">f</span>(<span class="fl">1</span>), <span class="kw">when</span> <span class="kw">=</span> <span class="st">"random error"</span>)
-<span class="co">#&gt; [1] 2</span>
-<span class="co"># keep retring until a requirement is satisified.</span>
-<span class="fu"><a href="reference/retry.html">retry</a></span>(<span class="fu">f</span>(<span class="fl">1</span>), <span class="kw">until</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">val</span>, <span class="no">cnd</span>) <span class="no">val</span> <span class="kw">==</span> <span class="fl">2</span>)
-<span class="co">#&gt; [1] 2</span>
-<span class="co"># or using one sided formula</span>
-<span class="fu"><a href="reference/retry.html">retry</a></span>(<span class="fu">f</span>(<span class="fl">1</span>), <span class="kw">until</span> <span class="kw">=</span> ~ <span class="no">.</span> <span class="kw">==</span> <span class="fl">2</span>)
-<span class="co">#&gt; [1] 2</span>
-
-<span class="no">z</span> <span class="kw">&lt;-</span> <span class="fl">0</span>
-<span class="kw pkg">later</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/later/man/later.html">later</a></span>(<span class="kw">function</span>() <span class="no">z</span> <span class="kw">&lt;&lt;-</span> <span class="fl">1</span>, <span class="fl">1</span>)
-<span class="fu"><a href="reference/wait_until.html">wait_until</a></span>(<span class="no">z</span> <span class="kw">==</span> <span class="fl">1</span>)
-<span class="no">z</span>
-<span class="co">#&gt; [1] 1</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/randy3k/retry" class="external-link">retry</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"random error"</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># keep retring when there is a random error</span></span>
+<span><span class="fu"><a href="reference/retry.html">retry</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, when <span class="op">=</span> <span class="st">"random error"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="co"># keep retring until a requirement is satisified.</span></span>
+<span><span class="fu"><a href="reference/retry.html">retry</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, until <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">val</span>, <span class="va">cnd</span><span class="op">)</span> <span class="va">val</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="co"># or using one sided formula</span></span>
+<span><span class="fu"><a href="reference/retry.html">retry</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, until <span class="op">=</span> <span class="op">~</span> <span class="va">.</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="fu">later</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/later/reference/later.html" class="external-link">later</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="va">z</span> <span class="op">&lt;&lt;-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/wait_until.html">wait_until</a></span><span class="op">(</span><span class="va">z</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">z</span></span>
+<span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=retry">https://​cloud.r-project.org/​package=retry</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/randy3k/retry/">https://​github.com/​randy3k/​retry/​</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=retry" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/randy3k/retry/" class="external-link">Browse source code</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing retry</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Randy Lai <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/randy3k/retry"><img src="https://github.com/randy3k/retry/workflows/build/badge.svg?branch=master" alt="Github Action"></a></li>
-<li><a href="https://codecov.io/gh/randy3k/retry"><img src="https://codecov.io/gh/randy3k/retry/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://cran.r-project.org/package=retry"><img src="https://www.r-pkg.org/badges/version/retry" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://cran.r-project.org/package=retry"><img src="https://cranlogs.r-pkg.org/badges/grand-total/retry"></a></li>
-</ul>
-</div>
-</div>
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Randy Lai.</p>
+  <p></p>
+<p>Developed by Randy Lai.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -163,6 +165,8 @@
 
   
 
+
+  
 
   </body>
 </html>

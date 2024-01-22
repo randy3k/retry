@@ -1,7 +1,8 @@
 Package: retry
 Type: Package
 Title: Repeated Evaluation
-Version: 0.1.0.9999
+Version: 0.1.1
+Date: 2024-01-22
 Authors@R: 
     c(person(given = "Randy",
              family = "Lai",
