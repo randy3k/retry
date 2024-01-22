@@ -2,13 +2,14 @@
 # Repeated Evaluation
 
 [![check](https://github.com/randy3k/retry/actions/workflows/check.yaml/badge.svg)](https://github.com/randy3k/retry/actions/workflows/check.yaml)
-[![codecov](https://codecov.io/gh/randy3k/retry/branch/master/graph/badge.svg)](https://codecov.io/gh/randy3k/retry)
+[![codecov](https://codecov.io/gh/randy3k/retry/branch/master/graph/badge.svg)](https://app.codecov.io/gh/randy3k/retry)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/retry)](https://cran.r-project.org/package=retry)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/retry)](https://cran.r-project.org/package=retry)
 
 Github: <https://github.com/randy3k/retry>
 
-Documentation: <https://randy3k.github.io/retry>
+Documentation:
+[https://randy3k.github.io/retry](https://randy3k.github.io/retry/)
 
 Provide simple mechanism to repeatedly evaluate an expression until
 either it succeeds or timeout exceeded. It is useful in situations that
